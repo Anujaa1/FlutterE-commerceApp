@@ -2,12 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_2/pages/create.dart';
 import 'package:flutter_application_2/pages/create.dart';
 import 'package:flutter_application_2/provider/cartProvider.dart';
+import 'package:flutter_application_2/provider/WishlistProvider.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(ChangeNotifierProvider(
-      create: (_)=>Cartprovider(),
-      child: const MyApp()));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => Cartprovider()),
+        ChangeNotifierProvider(create: (_) => WishlistProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

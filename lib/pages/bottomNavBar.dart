@@ -23,9 +23,9 @@ class _BottomnavbarState extends State<Bottomnavbar> {
 
     List<Widget> pages =[
       Homepage(),
-      CartPage(),
+      Cartpage(),
 
-      Wishlistpage(),
+      WishlistPage(),
       Profilepage(
         username: widget.username,
         email: widget.email,

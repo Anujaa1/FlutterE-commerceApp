@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/provider/cartProvider.dart';
+import'package:flutter_application_2/provider/WishlistProvider.dart';
 import 'package:provider/provider.dart';
 
 class Detailpage extends StatefulWidget {
@@ -11,8 +12,10 @@ class Detailpage extends StatefulWidget {
 }
 
 class _DetailpageState extends State<Detailpage> {
+  bool isFavourite=false;
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Product Detail",
@@ -23,8 +26,20 @@ class _DetailpageState extends State<Detailpage> {
         actions: [
           Padding(
             padding: const EdgeInsets.all(10),
-            child: Icon(Icons.favorite_outline),
-          )
+            child: IconButton(
+              icon: Icon(Icons.favorite),
+              color: isFavourite ? Colors.red : Colors.grey,
+              onPressed: () {
+                Provider.of<WishlistProvider>(context,listen: false).addToWishlist(widget.productDetail);
+
+        ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Product added to Wishlist")));
+                setState(() {
+                  isFavourite = !isFavourite;
+                });
+              },
+            ),
+          ),
         ],
       ),
 
