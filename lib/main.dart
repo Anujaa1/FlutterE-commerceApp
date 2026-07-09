@@ -4,8 +4,10 @@ import 'package:flutter_application_2/pages/create.dart';
 import 'package:flutter_application_2/provider/cartProvider.dart';
 import 'package:flutter_application_2/provider/WishlistProvider.dart';
 import 'package:provider/provider.dart';
-
-void main() {
+import 'package:firebase_core/firebase_core.dart';
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(
     MultiProvider(
       providers: [

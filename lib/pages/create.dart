@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_application_2/pages/homepage.dart';
 import 'package:flutter_application_2/pages/profilepage.dart';
 import'package:flutter_application_2/pages/bottomNavBar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 
 class CreateAccountPage extends StatefulWidget {
@@ -15,6 +16,12 @@ TextEditingController usernameController =TextEditingController();
 TextEditingController emailController =TextEditingController();
 TextEditingController passwordController =TextEditingController();
 
+Future<void> signUp() async {
+  await FirebaseAuth.instance.createUserWithEmailAndPassword(
+    email: emailController.text.trim(),
+    password: passwordController.text.trim(),
+  );
+}
 class _CreateaccountpageState extends State<CreateAccountPage> {
   @override
   Widget build(BuildContext context) {
@@ -23,29 +30,27 @@ class _CreateaccountpageState extends State<CreateAccountPage> {
         r"^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$"
     );
 
-    void validation(){
+    Future <void> validation()async{
       String username =usernameController.text.trim();
       String email =emailController.text.trim();
       String password =passwordController.text.trim();
-
-      setState(() {
-        if(username.isEmpty || email.isEmpty || password.isEmpty){
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("Field Cannot be empty"))
-          );
-        }
-        else if(password.length <4){
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("Password is too short"))
-          );
-        }
-        else if(!emailExp.hasMatch(email)){
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text("Email is invalid"))
-          );
-        }
-        else{
-          Navigator.push(context,
+      if(username.isEmpty || email.isEmpty || password.isEmpty){
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Field Cannot be empty"))
+        );
+      }
+      else if(password.length <4){
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Password is too short"))
+        );
+      }
+      else if(!emailExp.hasMatch(email)){
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Email is invalid"))
+        );
+      }
+      await signUp();
+      Navigator.push(context,
               MaterialPageRoute(
                   builder: (context)=>Bottomnavbar(
                     username: username,
@@ -53,8 +58,6 @@ class _CreateaccountpageState extends State<CreateAccountPage> {
                   ),
 
               ));
-        }
-      });
     }
 
     return Scaffold(
