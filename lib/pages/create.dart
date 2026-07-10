@@ -16,12 +16,49 @@ TextEditingController usernameController =TextEditingController();
 TextEditingController emailController =TextEditingController();
 TextEditingController passwordController =TextEditingController();
 
-Future<void> signUp() async {
+Future<void> signUp(BuildContext context ) async {
+  try{
   await FirebaseAuth.instance.createUserWithEmailAndPassword(
     email: emailController.text.trim(),
     password: passwordController.text.trim(),
   );
-}
+  ScaffoldMessenger.of(context).showSnackBar(
+    const SnackBar(
+      content: Text("Account created successfully"),
+    )
+  );
+} on FirebaseAuthException catch (e){
+    if(e.code=='email-already-in-use') {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+        content: Text('This email is already in use'),
+      ),
+      );
+    }
+
+  else if (e.code=='weak-password'){
+  ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+  content: Text('Password should be atleast 6 characters'),
+      ),
+  );
+  }
+   else if (e.code=='invalid-email'){
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+        content: Text('This email is invalid'),
+          )
+          );
+
+    }else{
+      ScaffoldMessenger.of(context).showSnackBar(
+       SnackBar(
+        content: Text(e.message ?? 'Something Went wrong'),
+      ),
+  );
+    }
+  }
+      }
 class _CreateaccountpageState extends State<CreateAccountPage> {
   @override
   Widget build(BuildContext context) {
@@ -49,7 +86,7 @@ class _CreateaccountpageState extends State<CreateAccountPage> {
             SnackBar(content: Text("Email is invalid"))
         );
       }
-      await signUp();
+      await signUp(context);
       Navigator.push(context,
               MaterialPageRoute(
                   builder: (context)=>Bottomnavbar(
