@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/pages/create.dart';
 import 'package:flutter_application_2/pages/create.dart';
+import 'package:flutter_application_2/pages/welcome.dart';
 import 'package:flutter_application_2/provider/cartProvider.dart';
 import 'package:flutter_application_2/provider/WishlistProvider.dart';
 import 'package:provider/provider.dart';
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: CreateAccountPage(),
+      home: WelcomePage(),
     );
   }
 }
