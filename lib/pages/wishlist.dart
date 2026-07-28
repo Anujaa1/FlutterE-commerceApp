@@ -31,11 +31,11 @@ class _WishlistPageState extends State<WishlistPage> {
 
               return ListTile(
                 leading: Image.network(
-                  product["image"],
+                  product.image,
                   width: 60,
                 ),
-                title: Text(product["name"]),
-                subtitle: Text(product["price"]),
+                title: Text(product.name),
+                subtitle: Text(product.price),
                 trailing: IconButton(
                     onPressed: (){
                       cart.removeFromWishlist(index);

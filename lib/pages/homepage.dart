@@ -4,6 +4,8 @@ import 'package:flutter_application_2/pages/cartpage.dart';
 import 'package:flutter_application_2/pages/homepage.dart';
 import 'package:flutter_application_2/pages/profilepage.dart';
 import 'package:flutter_application_2/pages/wishlist.dart';
+import'package:flutter_application_2/provider/productProvider.dart';
+import 'package:provider/provider.dart';
 
 import 'package:flutter_application_2/pages/detailPage.dart';
 import 'package:flutter_application_2/pages/bottomNavBar.dart';
@@ -13,10 +15,11 @@ class Homepage extends StatefulWidget {
   const Homepage({super.key});
 
   @override
+
   State<Homepage> createState() => _HomepageState();
 }
 TextEditingController searchController=TextEditingController();
-List<Map<String, dynamic>> filteredProduct =product.products;
+
 List<String>imageList=[
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7-hum-rXy1P7NwEY6AdwzGBvNHQDHeG1tv9oNUqpEUw&s=10",
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTVYuh3vcAOD5LLOVBRVkgfIcVQpytyv9kXlHJTRunnew&s=10",
@@ -26,8 +29,18 @@ List<String>imageList=[
 
 
 class _HomepageState extends State<Homepage> {
+  List<Product> displayedProducts = [];
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask((){
+    context.read<ProductProvider>().getProducts();
+    });
+  }
   @override
   Widget build(BuildContext context) {
+    final provider = context.watch<ProductProvider>();
+    final products = provider.products;
     List<Widget> pages =[
 
       Bottomnavbar(
@@ -40,18 +53,25 @@ class _HomepageState extends State<Homepage> {
     void searchProducts(String query){
       setState(() {
 
-      if(query.isEmpty){
-         filteredProduct=product.products;
-      }else{
-         filteredProduct=product.products.where(
-            (products)=>products['name'].toString().toLowerCase().contains(query.toLowerCase())
+        if(displayedProducts.isEmpty){
+          displayedProducts = provider.products;
+        }else{
+        final searchedProducts = provider.products.where(
+              (product) =>
+              product.name
+                  .toLowerCase()
+                  .contains(query.toLowerCase()),
         ).toList();
 
       }
 
       });
     }
-    return Scaffold(
+
+
+    return
+      Scaffold(
+
       body:  SafeArea(child:Padding (
         padding:const EdgeInsets.all(10),
       child: Column(
@@ -100,18 +120,19 @@ class _HomepageState extends State<Homepage> {
     GridView.builder(
 
     shrinkWrap: true,
-    physics:AlwaysScrollableScrollPhysics(),
+        physics: NeverScrollableScrollPhysics(),
     gridDelegate:SliverGridDelegateWithFixedCrossAxisCount(
+
     crossAxisSpacing:10,
     mainAxisSpacing:10,
     crossAxisCount:2,
-    childAspectRatio:0.6
+    childAspectRatio:0.5,
     ),
 
-    itemCount:filteredProduct.length,
+    itemCount:products.length,
 
     itemBuilder:(context,index){
-      final item = filteredProduct[index];
+      final item = products[index];
       return GestureDetector(
           onTap:(){
             Navigator.push(context,MaterialPageRoute(
@@ -128,7 +149,7 @@ class _HomepageState extends State<Homepage> {
             borderRadius:BorderRadius.only(topLeft: Radius.circular(10),
             topRight: Radius.circular(10)),
 
-            child: Image.network(item["image"],
+            child: Image.network(item.image,
             height:150,
             width:MediaQuery.of(context).size.width,
             fit: BoxFit.cover,),),
@@ -136,13 +157,13 @@ class _HomepageState extends State<Homepage> {
             padding: const EdgeInsets.all(10),
             child:Column(
             children:[
-            Text(item["name"],style:TextStyle(
-            fontSize:16,
+            Text(item.name,style:TextStyle(
+            fontSize:13,
             fontWeight: FontWeight.bold
             ),),
             SizedBox(height:6,),
-            Text(item['price']?? "",style:TextStyle(//toString()// checking with null operator
-        fontSize:16,
+            Text(item.price,style:TextStyle(//toString()// checking with null operator
+        fontSize:12,
         fontWeight:FontWeight.bold,
           color:Theme.of(context).colorScheme.primary
             ),),
@@ -151,8 +172,8 @@ class _HomepageState extends State<Homepage> {
             children:[
             Icon(Icons.star,color:Colors.amber,),
             SizedBox(width:4,),
-            Text(item['rating'].toString(),style:TextStyle(
-            fontSize:16,
+            Text(item.rating.toString(),style:TextStyle(
+            fontSize:14,
             fontWeight:FontWeight.bold
             ))
             ]

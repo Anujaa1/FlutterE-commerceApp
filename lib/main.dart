@@ -4,6 +4,7 @@ import 'package:flutter_application_2/pages/create.dart';
 import 'package:flutter_application_2/pages/welcome.dart';
 import 'package:flutter_application_2/provider/cartProvider.dart';
 import 'package:flutter_application_2/provider/WishlistProvider.dart';
+import 'package:flutter_application_2/provider/productProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 void main() async{
@@ -14,6 +15,7 @@ void main() async{
       providers: [
         ChangeNotifierProvider(create: (_) => Cartprovider()),
         ChangeNotifierProvider(create: (_) => WishlistProvider()),
+        ChangeNotifierProvider(create: (_) => ProductProvider()),
       ],
       child: const MyApp(),
     ),

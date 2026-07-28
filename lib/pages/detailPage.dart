@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_2/model/model.dart';
 import 'package:flutter_application_2/provider/cartProvider.dart';
 import'package:flutter_application_2/provider/WishlistProvider.dart';
 import 'package:provider/provider.dart';
 
 class Detailpage extends StatefulWidget {
-  final Map<String, dynamic> productDetail;
+  final Product productDetail;
   const Detailpage({super.key,required this.productDetail});
 
   @override
@@ -57,8 +58,8 @@ class _DetailpageState extends State<Detailpage> {
                       backgroundColor: Theme.of(context).colorScheme.primary
                   ),
                   onPressed: (){
-                    Provider.of<Cartprovider>(context,listen: false).addToCart(widget.productDetail);
-
+                    Provider.of<Cartprovider>(context,listen: false)
+                        .addToCart(widget.productDetail);
                     ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text("Product added to cart"))
                     );
@@ -99,7 +100,7 @@ class _DetailpageState extends State<Detailpage> {
                   Expanded(
                     child: AspectRatio(
                       aspectRatio: 16/14,
-                      child: Image.network(widget.productDetail["image"]??"",
+                      child: Image.network(widget.productDetail.image,
                         height: 350,
                         fit: BoxFit.cover,),
                     ),
@@ -114,7 +115,7 @@ class _DetailpageState extends State<Detailpage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(widget.productDetail["name"]??"",
+                    Text(widget.productDetail.name,
                       style: TextStyle(
                           fontSize: 24,fontWeight: FontWeight.bold
                       ),),
@@ -131,7 +132,7 @@ class _DetailpageState extends State<Detailpage> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(widget.productDetail["price"].toString()??"", style: TextStyle(
+                            Text(widget.productDetail.price.toString()??"", style: TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w600,
                                 color: Theme.of(context).colorScheme.primary
@@ -141,7 +142,7 @@ class _DetailpageState extends State<Detailpage> {
                               children: [
                                 Icon(Icons.star, color: Colors.amber,),
                                 SizedBox(width: 6,),
-                                Text(widget.productDetail["rating"].toString())
+                                Text(widget.productDetail.rating.toString())
                               ],
                             ),
                           ],
@@ -169,7 +170,7 @@ class _DetailpageState extends State<Detailpage> {
 
                               SizedBox(height: 10,),
 
-                              Text(widget.productDetail["description"]?.toString()??"",
+                              Text(widget.productDetail.description.toString()??"",
                                 style: TextStyle(
                                     fontSize: 14,
                                     fontWeight: FontWeight.w400,

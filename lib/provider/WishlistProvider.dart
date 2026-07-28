@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import'package:flutter_application_2/model/model.dart';
+
 
 
 class WishlistProvider extends ChangeNotifier{
 
-  final List<Map<String,dynamic>> _wishlistItems =[];
-  List<Map<String,dynamic>> get wishlistItems =>_wishlistItems;
+  final List<Product> _wishlistItems =[];
+  List<Product> get wishlistItems => _wishlistItems;
 
-  void addToWishlist(Map<String,dynamic> product){
+
+  void addToWishlist(Product product){
     _wishlistItems.add(product);
     notifyListeners();
   }
