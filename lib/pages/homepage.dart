@@ -100,7 +100,7 @@ class _HomepageState extends State<Homepage> {
                         enlargeCenterPage: true,
                         aspectRatio: 0.9,
                         autoPlay: true,
-                        autoPlayInterval:Duration(seconds: 3)
+                        autoPlayInterval:Duration(seconds: 15)
                     )),
 
               ListTile(

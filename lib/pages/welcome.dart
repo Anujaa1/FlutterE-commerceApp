@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_2/pages/create.dart';
+import 'package:flutter_application_2/pages/login.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class WelcomePage extends StatefulWidget {
@@ -20,7 +21,6 @@ class _WelcomePageState extends State<WelcomePage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-
                 Text(
                   "Welcome to eAsyCART",
                   style: GoogleFonts.shadowsIntoLight(
@@ -47,7 +47,8 @@ class _WelcomePageState extends State<WelcomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const CreateAccountPage(),
+                          builder: (context) =>
+                          const CreateAccountPage(),
                         ),
                       );
                     },
@@ -61,6 +62,39 @@ class _WelcomePageState extends State<WelcomePage> {
                   ),
                 ),
 
+                const SizedBox(height: 20),
+
+                // Already have an account
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Already have an account? ",
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey,
+                      ),
+                    ),
+
+                    TextButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoginPage(),
+                          ),
+                        );
+                      },
+                      child: const Text(
+                        "Login",
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),

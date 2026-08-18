@@ -18,15 +18,29 @@ TextEditingController passwordController =TextEditingController();
 
 Future<void> signUp(BuildContext context ) async {
   try{
-  await FirebaseAuth.instance.createUserWithEmailAndPassword(
-    email: emailController.text.trim(),
-    password: passwordController.text.trim(),
-  );
+      UserCredential userCredential =
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+
+      // Store username in Firebase Auth
+      await userCredential.user!.updateDisplayName(
+        usernameController.text.trim(),
+      );
   ScaffoldMessenger.of(context).showSnackBar(
     const SnackBar(
       content: Text("Account created successfully"),
     )
   );
+  Navigator.push(context,
+      MaterialPageRoute(
+        builder: (context)=>Bottomnavbar(
+          username: usernameController.text.trim(),
+          email: emailController.text.trim(),
+        ),
+
+      ));
 } on FirebaseAuthException catch (e){
     if(e.code=='email-already-in-use') {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -87,14 +101,7 @@ class _CreateaccountpageState extends State<CreateAccountPage> {
         );
       }
       await signUp(context);
-      Navigator.push(context,
-              MaterialPageRoute(
-                  builder: (context)=>Bottomnavbar(
-                    username: username,
-                    email: email,
-                  ),
 
-              ));
     }
 
     return Scaffold(
